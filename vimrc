@@ -1,141 +1,127 @@
-" General config
-set nocompatible
-set history=700
-set autoread
-set hidden
-set so=7
-set ruler
-set backspace=indent,eol,start
-set whichwrap+=<,>,h,l
-set autochdir
-set ignorecase
-set smartcase
-set hlsearch
-set incsearch
-set magic
-set showmatch
-set mat=1
-set cpoptions+=$ 
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
-set fileformats=unix,mac,dos
-set fileformat=unix
-set gfn=Consolas\ 9 
-set shell=/bin/bash
-set t_Co=256
-set background=dark
-colorscheme darkspectrum 
-set number
-set showcmd
-set encoding=utf8
-syntax on
-set ttyfast
-set nobackup
-set nowb
-set noswapfile
-set directory=~/.vim/backup,/tmp
-set undodir=~/.vim/undo
-set wildmenu
-set expandtab
-set shiftwidth=3
-set tabstop=3
-set smarttab
-set spell spelllang=en_au
-set ai
-set si
-set linespace=1
-set statusline=%F%m%r%h%w\ (%{&ff})\ \ \ \ %l:%L\ %p%%
-set browsedir=buffer 
+" -- passbe vim configuration --
 
-" Sets highlight cursor line (GUI) + turns off toolbar
+" General
+
+set nocompatible						" Explicitly get out of vi-compatible mode
+set history=1000						" Sets how many lines of history VIM has to remember
+set autoread							" Set to auto read when a file is changed from the outside
+set so=7							" Set 7 lines to the cursors - when moving vertical
+set wildmenu							" Turn on wild menu
+set wildmode=longest:full					" Make wild menu more like bash completion
+set ruler							" Always show current position
+set hidden							" Change buffers without saving
+set autochdir							" Switch to the current file directory 
+
+set backspace=indent,eol,start					" Set backspace config
+set whichwrap+=<,>,h,l						" ^^
+set ignorecase							" Ignore case when searching
+set smartcase							" ^^
+set hlsearch							" Highlight search items
+set incsearch							" Make search act like search in modern browsers
+
+setlocal spell spelllang=en_au					" Turn on spelling
+
+set magic							" Set magic on, for regular expressions
+set showmatch							" Show matching brackets when text indicator is over them
+set mat=2							" How many tenths of a second to blink
+
+set noerrorbells						" No sound
+set novisualbell						" ^^
+set t_vb=							" ^^
+set tm=500							" ^^
+
+syntax enable							" Enable syntax
+set gfn=Deja\ Vu\ Sans\ Mono\ 8. 				" Set font
+set shell=/bin/bash						" Set shell
+set fileformats=unix,mac,dos					" Set file formats
+set fileformat=unix						" Set main file format
+set encoding=utf8						" Set encoding
+set background=dark						" Set background colour
+set number							" Show line numbers		
+set showcmd							" Show command being typed
+set linespace=1							" Extra pixels between lines
+set laststatus=2						" Enable status line always
+
+set nobackup							" No backup files
+set nowb							" ^^
+set noswapfile							" ^^
+set undodir=~/.vim/undo						" Set undo directory
+
+set expandtab							" No real tabs
+set shiftwidth=4						" Auto indent amount
+set tabstop=4							" Real tabs
+set smarttab							" Smart tabs
+set ai								" Auto indent
+set si								" Smart indent
+
+set ttyfast							" Faster terminal connection
+set cpoptions+=$						" Replacement character
+
+" GUI
+
 if has("gui_running")
-	set cursorline
-	set guioptions-=T
+	set guioptions-=T 					" Turn off GUI toolbar
+        set t_Co=256						" Allow 256 colours
 endif
 
-" Enable status line always
-set laststatus=2
+let g:solarized_termcolors=256                                  " Degrade solarized when in terminal mode
+let g:solarized_menu=0                                          " Disable menu
+colorscheme solarized 						" Set colorscheme (set after general config)
 
-" Switch status bar color depending on mode
-if version >= 700
-  au InsertEnter * call InsertStatuslineColor(v:insertmode)
-  au InsertLeave * hi StatusLine guibg=#3C3C3C
-endif
+" Mappings
 
-function! InsertStatuslineColor(mode)
-  if a:mode == 'i'
-    hi statusline guibg=#870000
-  elseif a:mode == 'r'
-    hi statusline guibg=#870000
-  else
-    hi statusline guibg=#870000
-  endif
-endfunction
+map Q gq							" Don't use Ex mode, use Q for formatting
+noremap <tab> :bnext<CR>					" Buffer next
+noremap <S-tab> :bprev<CR>					" Buffer previous
+map <F4> :redraw!<CR>						" Redraw
+noremap ` :bw<CR>						" Buffer Destroy
 
-" Don't use Ex mode, use Q for formatting
-map Q gq
+map <C-j> <C-W>j						" Smart way to move between windows
+map <C-k> <C-W>k						" ^^
+map <C-h> <C-W>h						" ^^
+map <C-l> <C-W>l						" ^^
 
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
+nnoremap <silent> <F3>      :call ToggleWrap()<CR>		" Toggles wrap
+vnoremap <silent> <F3> <C-C>:call ToggleWrap()<CR>		" ^^
+inoremap <silent> <F3> <C-O>:call ToggleWrap()<CR>		" ^^
 
-" Buffer next prev
-noremap <tab> :bnext<CR>
-noremap <S-tab> :bprev<CR>
+nmap <silent> ; :NERDTreeToggle ~/projects/<CR>                 " Toggle NERDTree
+map <F2> :%s/\r//g<cr>  					" Remove DOS returns ^M
+nnoremap <CR> :noh<CR><CR>                                      " Clear last search pattern
 
-" Redraw
-map <F4> :redraw!<CR>
+cnoremap <C-A> <Home>						" Bash like keys for the command line
+cnoremap <C-E> <End>						" ^^
+cnoremap <C-K> <C-U>						" ^^
+cnoremap <C-P> <Up>						" ^^
+cnoremap <C-N> <Down>						" ^^
 
-" Buffer Destroy
-noremap ` :bw<CR>
+" Functions
 
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" Toggles wrap
-nnoremap <silent> <F3>      :call ToggleWrap()<CR>
-vnoremap <silent> <F3> <C-C>:call ToggleWrap()<CR>
-inoremap <silent> <F3> <C-O>:call ToggleWrap()<CR>
-
-function ToggleWrap()
+function ToggleWrap()						" Wrap function
     set wrap!
-    echo &wrap ? 'wrap' : 'nowrap'
+    echo &wrap ? 'Wrap On' : 'Wrap Off'
 endfunc
 
-" Nerd Tree
-map ; :NERDTreeToggle ~/projects/<cr>
+" Vundle
+filetype off                                                    " Set filetype off (required for Vundle)
+set rtp+=~/.vim/bundle/vundle/                                  " Set Vundle path
+call vundle#rc()                                                " Execute Vundle
+Bundle 'gmarik/vundle'                                          
+Bundle 'altercation/vim-colors-solarized'                       
+Bundle 'tpope/vim-surround'                                     
+Bundle 'scrooloose/nerdtree'                                    
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'vim-scripts/AutoComplPop'
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-commentary'
+filetype plugin indent on                                       " Requried for Vundle
 
-" Tags
-map <F2> :TlistToggle<cr>
+" Plugins
 
-" NERDTree Options
-let g:NERDTreeIgnore = ['.git', '.svn']
+let g:NERDTreeIgnore = ['.git', '.svn']				" NERDTree Options
 let g:NERDTreeQuitOnOpen = 1
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 30
 let g:NERDTreeMinimalUI = 0
 let g:NERDTreeDirArrows = 1
-
-" Tag List
-let g:Tlist_Auto_Highlight_Tag = 0
-let g:Tlist_Enable_Fold_Column = 0
-let g:Tlist_Inc_Winwidth = 40
-let g:Tlist_Use_Right_Window = 1
-let g:Tlist_Ctags_Cmd = '/usr/bin/ctags'
-let g:Tlist_Show_One_File = 1
-
-" Set omincomplete
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType c set omnifunc=ccomplete#Complete
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 
