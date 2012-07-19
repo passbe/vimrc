@@ -114,6 +114,7 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'vim-scripts/AutoComplPop'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-commentary'
+Bundle 'git://repo.or.cz/vcscommand'
 filetype plugin indent on                                       " Requried for Vundle
 
 " Plugins
