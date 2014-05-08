@@ -10,7 +10,6 @@ set wildmenu							" Turn on wild menu
 set wildmode=longest:full					" Make wild menu more like bash completion
 set ruler							" Always show current position
 set hidden							" Change buffers without saving
-set autochdir							" Switch to the current file directory 
 
 set backspace=indent,eol,start					" Set backspace config
 set whichwrap+=<,>,h,l						" ^^
@@ -64,16 +63,13 @@ if has("gui_running")
         set t_Co=256						" Allow 256 colours
 endif
 
-let g:solarized_termcolors=256                                  " Degrade solarized when in terminal mode
-let g:solarized_menu=0                                          " Disable menu
-colorscheme solarized 						" Set colorscheme (set after general config)
+autocmd! GUIEnter * set vb t_vb=    " MacVim no beep
+
+colorscheme base16-default 						" Set colorscheme (set after general config)
 
 " Mappings
-
 map Q gq							" Don't use Ex mode, use Q for formatting
-noremap <tab> :bnext<CR>					" Buffer next
-noremap <S-tab> :bprev<CR>					" Buffer previous
-map <F4> :redraw!<CR>						" Redraw
+noremap <S-tab> :bnext<CR>					" Buffer next
 noremap ` :bw<CR>						" Buffer Destroy
 
 map <C-j> <C-W>j						" Smart way to move between windows
@@ -81,12 +77,8 @@ map <C-k> <C-W>k						" ^^
 map <C-h> <C-W>h						" ^^
 map <C-l> <C-W>l						" ^^
 
-nnoremap <silent> <F3>      :call ToggleWrap()<CR>		" Toggles wrap
-vnoremap <silent> <F3> <C-C>:call ToggleWrap()<CR>		" ^^
-inoremap <silent> <F3> <C-O>:call ToggleWrap()<CR>		" ^^
-
-nmap <silent> ; :NERDTreeToggle ~/projects/<CR>                 " Toggle NERDTree
-map <F2> :%s/\r//g<cr>  					" Remove DOS returns ^M
+nnoremap <silent> ; :CtrlP<CR>
+nnoremap <silent> <tab> :CtrlPBuffer<CR>
 nnoremap <CR> :noh<CR><CR>                                      " Clear last search pattern
 
 cnoremap <C-A> <Home>						" Bash like keys for the command line
@@ -95,34 +87,24 @@ cnoremap <C-K> <C-U>						" ^^
 cnoremap <C-P> <Up>						" ^^
 cnoremap <C-N> <Down>						" ^^
 
-" Functions
-
-function ToggleWrap()						" Wrap function
-    set wrap!
-    echo &wrap ? 'Wrap On' : 'Wrap Off'
-endfunc
-
 " Vundle
 filetype off                                                    " Set filetype off (required for Vundle)
 set rtp+=~/.vim/bundle/vundle/                                  " Set Vundle path
 call vundle#rc()                                                " Execute Vundle
 Bundle 'gmarik/vundle'                                          
-Bundle 'altercation/vim-colors-solarized'                       
 Bundle 'tpope/vim-surround'                                     
-Bundle 'scrooloose/nerdtree'                                    
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'vim-scripts/AutoComplPop'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-commentary'
-Bundle 'git://repo.or.cz/vcscommand'
+Bundle 'astashov/vim-ruby-debugger'
+Bundle 'chriskempson/base16-vim'
+Bundle 'kien/ctrlp.vim'
 filetype plugin indent on                                       " Requried for Vundle
 
-" Plugins
+" Set comment strings
 
-let g:NERDTreeIgnore = ['.git', '.svn']				" NERDTree Options
-let g:NERDTreeQuitOnOpen = 1
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeWinSize = 30
-let g:NERDTreeMinimalUI = 0
-let g:NERDTreeDirArrows = 1
+autocmd FileType ruby set commentstring=#\ %s
 
+" CtrlP
+let g:ctrlp_match_window = "top,order:btt,min:1,max:16,results:14"
