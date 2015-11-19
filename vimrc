@@ -51,16 +51,14 @@ if has("gui_running")
 	set guioptions-=T 				" Turn off GUI toolbar
 endif
 autocmd! GUIEnter * set vb t_vb=    " MacVim no beep
-colorscheme base16-default 			" Set colorscheme 
+let g:solarized_termcolors=256      " Set 256 colorscheme settings for Solarized
+colorscheme solarized               " Set colorscheme
 
 " Mappings
+let mapleader = "\<Space>"
 map Q gq							" Don't use Ex mode, use Q for formatting
 noremap <S-tab> :bnext<CR>			" Buffer next
-noremap ` :bw<CR>					" Buffer Destroy
-map <C-j> <C-W>j					" Smart way to move between windows
-map <C-k> <C-W>k					" ^^
-map <C-h> <C-W>h					" ^^
-map <C-l> <C-W>l					" ^^
+noremap ` :Bdelete<CR>					" Buffer Destroy
 nnoremap <silent> ; :CtrlP<CR>      " Ctrl-P search for file
 nnoremap <silent> <tab> :CtrlPBuffer<CR> " Ctrl-P search for buffer
 
@@ -71,8 +69,12 @@ call vundle#begin()                  " Execute Vundle
 Plugin 'gmarik/Vundle.vim'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-commentary'
-Plugin 'chriskempson/base16-vim'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'ngmy/vim-rubocop'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'moll/vim-bbye'
+Plugin 'thoughtbot/vim-rspec'
+Plugin 'jgdavey/tslime.vim'
 call vundle#end()
 filetype plugin indent on            " Requried for Vundle
 
@@ -81,3 +83,18 @@ autocmd FileType ruby set commentstring=#\ %s
 
 " Disable whitespace warnings
 let g:airline#extensions#whitespace#checks = ['indent']
+let g:airline_theme = 'wombat'
+
+" CtrlP ignore .git
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_working_path_mode = 'w'
+
+" Specs
+let g:rspec_command = 'call Send_to_Tmux("RAILS_ENV=test rspec --color --format documentation --require spec_helper ../{spec}\n")'
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+let g:tslime_always_current_session = 1 
+let g:tslime_always_current_window = 1
+
