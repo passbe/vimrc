@@ -45,6 +45,7 @@ set si								" Smart indent
 set ttyfast							" Faster terminal connection
 set cpoptions+=$					" Replacement character
 set t_Co=256				        " Allow 256 colours
+set relativenumber                  " Turn on relative numbers
 
 " GUI
 if has("gui_running")
