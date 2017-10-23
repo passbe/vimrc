@@ -20,12 +20,10 @@ set number
 set showcmd
 set laststatus=2
 set undodir=~/.vim/undo
-set expandtab
+set autoindent
 set shiftwidth=4
 set tabstop=4
 set smarttab
-set autoindent
-set smartindent
 set ttyfast
 set cpoptions+=$
 set t_Co=256
@@ -50,9 +48,15 @@ nnoremap <silent> ; :CtrlP<CR>
 " Ctrl-P search for buffer
 nnoremap <silent> <tab> :CtrlPBuffer<CR>
 
+filetype plugin indent on
+
 " CtrlP ignore .git
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 let g:ctrlp_working_path_mode = 'w'
+
+" Ale
+let g:ale_completion_enabled = 1
+let g:ale_ruby_rubocop_options = '--except Layout/Tab,Layout/IdentationWidth'
 
 " Lightline config
 let g:lightline = {
