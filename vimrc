@@ -30,6 +30,7 @@ set ttyfast
 set cpoptions+=$
 set t_Co=256
 set relativenumber
+set noshowmode
 
 " Theme
 let g:solarized_termcolors=256
@@ -51,9 +52,10 @@ nnoremap <silent> <tab> :CtrlPBuffer<CR>
 " Set comment strings
 autocmd FileType ruby set commentstring=#\ %s
 
-" Disable whitespace warnings
-let g:airline#extensions#whitespace#checks = ['indent']
-let g:airline_theme = 'wombat'
+" Lightline config
+let g:lightline = {
+          \ 'colorscheme': 'wombat',
+          \ }
 
 " CtrlP ignore .git
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
