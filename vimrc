@@ -51,8 +51,15 @@ nnoremap <silent> <tab> :CtrlPBuffer<CR>
 filetype plugin indent on
 
 " CtrlP ignore .git
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = '\v[\/]\.(DS_Store|git|hg|svn|node_modules)$'
 let g:ctrlp_working_path_mode = 'w'
+ 
+" tslime
+let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
 
 " Ale
 let g:ale_completion_enabled = 1

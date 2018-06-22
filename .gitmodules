@@ -16,3 +16,12 @@
 [submodule "vim/pack/plugins/start/ale"]
 	path = vim/pack/plugins/start/ale
 	url = https://github.com/w0rp/ale.git
+[submodule "vim/pack/plugins/start/tslime.vim"]
+	path = vim/pack/plugins/start/tslime.vim
+	url = https://github.com/jgdavey/tslime.vim
+[submodule "vim/pack/plugins/start/vim-rspec"]
+	path = vim/pack/plugins/start/vim-rspec
+	url = https://github.com/thoughtbot/vim-rspec
+[submodule "vim/pack/plugins/start/traces"]
+	path = vim/pack/plugins/start/traces
+	url = https://github.com/markonm/traces.vim.git
