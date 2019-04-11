@@ -52,7 +52,7 @@ filetype plugin indent on
 
 " CtrlP ignore .git
 let g:ctrlp_custom_ignore = '\v[\/]\.(DS_Store|git|hg|svn|node_modules)$'
-let g:ctrlp_working_path_mode = 'w'
+let g:ctrlp_working_path_mode = 'r'
  
 " tslime
 let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
@@ -63,7 +63,7 @@ map <Leader>a :call RunAllSpecs()<CR>
 
 " Ale
 let g:ale_completion_enabled = 1
-let g:ale_ruby_rubocop_options = '--except Layout/Tab,Layout/IdentationWidth'
+let g:ale_ruby_rubocop_options = '--except Layout/Tab, Layout/IndentationWidth'
 
 " Lightline config
 let g:lightline = {
