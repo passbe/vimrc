@@ -1,116 +1,131 @@
-" General
-set history=1000					
+" passbe vimrc
+set history=500
+set background=dark
+set shiftwidth=4
+set tabstop=4
+set noexpandtab " Use tabs not spaces
+set autoindent
+set smarttab
+set backspace=indent,eol,start
 set autoread						
 set wildmenu						
 set wildmode=list:full			
 set ruler							
+set cmdheight=2
 set hidden
-set backspace=indent,eol,start
 set ignorecase
 set smartcase
 set hlsearch
 set incsearch
-set spell spelllang=en_au
 set magic
 set showmatch
-syntax enable
+set mat=2
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+set foldenable
+set foldlevelstart=99
+set foldcolumn=1
+set foldmethod=indent
+set spell spelllang=en_au
 set encoding=utf8
-set background=dark
+set ffs=unix,dos,mac
+set nobackup
+set nowb
+set noswapfile
 set number
 set showcmd
 set laststatus=2
 set undodir=~/.vim/undo
-set autoindent
-set shiftwidth=4
-set tabstop=4
-set smarttab
 set ttyfast
 set cpoptions+=$
 set t_Co=256
-set relativenumber
 set noshowmode
-set noswapfile
+set noinfercase
+set completeopt=longest,menuone,noinsert
+set shortmess+=c
+set cursorline
+set omnifunc=ale#completion#OmniFunc
 
-" Theme
-let g:solarized_termcolors=256
-colorscheme solarized
-
-" Mapping
 let mapleader = "\<Space>"
-" Don't use Ex mode, use Q for formatting
-map Q gq
+let g:solarized_termcolors=256
+
+syntax enable
+filetype plugin on
+filetype indent on
+colorscheme solarized " https://github.com/altercation/vim-colors-solarized
+
+" Save current buffer
+noremap <leader>w :w<cr>
+
+" Saves current file when no permission
+command W w !sudo tee % > /dev/null
+
+" Cycle between last two open buffers
+noremap <leader><leader> <c-^>
+
+" Open / close folds
+nnoremap <leader>f za
+
 " Buffer next
 noremap <S-tab> :bnext<CR>
+
 " Buffer destroy
 noremap ` :Bdelete<CR>
+
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
 " Ctrl-P search for file
 nnoremap <silent> ; :CtrlP<CR>
+
 " Ctrl-P search for buffer
 nnoremap <silent> <tab> :CtrlPBuffer<CR>
-
-filetype plugin indent on
 
 " CtrlP ignore .git
 let g:ctrlp_custom_ignore = '\v[\/]\.(DS_Store|git|hg|svn|node_modules)$'
 let g:ctrlp_working_path_mode = 'r'
  
 " tslime
-let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
 map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 
 " Ale
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 1
 let g:ale_completion_enabled = 1
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
 let g:ale_ruby_rubocop_options = '--except Layout/Tab, Layout/IndentationWidth'
+let g:ale_change_sign_column_color = 1
 
-" Lightline config
-let g:lightline = {
-\ 'colorscheme': 'wombat',
-\ 'active': {
-\   'right': [ [ 'lineinfo' ],
-\              [ 'percent' ],
-\              [ 'linter_warnings', 'linter_errors', 'linter_ok' ],
-\              [ 'fileformat', 'fileencoding', 'filetype' ] ]
-\ },
-\ 'component_expand': {
-\   'linter_warnings': 'LightlineLinterWarnings',
-\   'linter_errors': 'LightlineLinterErrors',
-\   'linter_ok': 'LightlineLinterOK'
-\ },
-\ 'component_type': {
-\   'linter_warnings': 'warning',
-\   'linter_errors': 'error',
-\   'linter_ok': 'ok'
-\ },
+" mucomplete
+let g:mucomplete#enable_auto_at_startup = 0
+
+" Lightline + ALE
+let g:lightline ={}
+let g:lightline.component_expand = {
+\  'linter_checking': 'lightline#ale#checking',
+\  'linter_warnings': 'lightline#ale#warnings',
+\  'linter_errors': 'lightline#ale#errors',
+\  'linter_ok': 'lightline#ale#ok',
 \ }
+let g:lightline.component_type = {
+\     'linter_checking': 'left',
+\     'linter_warnings': 'warning',
+\     'linter_errors': 'error',
+\     'linter_ok': 'left',
+\ }
+let g:lightline.active = { 'right': [
+\		['lineinfo'],
+\		['percent'],
+\		['fileformat', 'fileencoding', 'filetype'],
+\ 		[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ]
+\ ] }
 
-autocmd User ALELint call lightline#update()
-
-" ale + lightline
-function! LightlineLinterWarnings() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-    return l:counts.total == 0 ? '' : printf('%d --', all_non_errors)
-endfunction
-
-function! LightlineLinterErrors() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-    return l:counts.total == 0 ? '' : printf('%d >>', all_errors)
-endfunction
-
-function! LightlineLinterOK() abort
-    let l:counts = ale#statusline#Count(bufnr(''))
-    let l:all_errors = l:counts.error + l:counts.style_error
-    let l:all_non_errors = l:counts.total - l:all_errors
-    return l:counts.total == 0 ? '✓' : ''
-endfunction
-
-" Load all plugins now.
-packloadall
-" Load all of the helptags now, after plugins have been loaded.
-silent! helptags ALL
+packloadall " Load all plugins
+silent! helptags ALL " Load all of the helptags now, after plugins have been loaded.

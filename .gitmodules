@@ -25,3 +25,9 @@
 [submodule "vim/pack/plugins/start/traces"]
 	path = vim/pack/plugins/start/traces
 	url = https://github.com/markonm/traces.vim.git
+[submodule "vim/pack/plugins/start/lightline-ale"]
+	path = vim/pack/plugins/start/lightline-ale
+	url = https://github.com/maximbaz/lightline-ale.git
+[submodule "vim/pack/plugins/start/vim-mucomplete"]
+	path = vim/pack/plugins/start/vim-mucomplete
+	url = https://github.com/lifepillar/vim-mucomplete.git
